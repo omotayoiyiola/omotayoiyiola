@@ -2,7 +2,7 @@
 - 👀 I’m interested in Full Stack Development
 - 🌱 I’m currently learning Express and React
 - 💞️ I’m looking to collaborate on React and Express Projects
-- 📫 How to reach me on email clintonty@gmail.com
+- 📫 How to reach me on email clintonty@yahoo.ca
 
 <!---
 omotayoiyiola/omotayoiyiola is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
