@@ -1,6 +1,5 @@
 - 👋 Hi, I’m @omotayoiyiola
 - 👀 I’m interested in Full Stack Development
-- 🌱 I’m currently learning Express and React
 - 💞️ I’m looking to collaborate on React and Express Projects
 - 📫 How to reach me on email clintonty@yahoo.ca
 
