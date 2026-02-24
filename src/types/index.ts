@@ -9,12 +9,14 @@ export interface Project {
 
 export interface Blog {
   title: string;
-  details: string;
   excerpt: string;
-  youtubeLink: string;
-  readMinute: string;
   slug: string;
-  readTime: string;
-  createdAt: string;
-  updatedAt: string;
+  date: string; // Existing field in your data
+  readTime: string; // Existing field in your data
+  // Make these optional so the error disappears
+  details?: string;
+  youtubeLink?: string;
+  readMinute?: string | number;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -58,11 +58,14 @@ const Blogs = ({ blogs }: BlogsProps) => {
                 whileHover={{ scale: 1.05 }}
               >
                 <FaCalendarAlt className="w-4 h-4 mr-1" />
-                {new Date(blog.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {new Date(blog.createdAt ?? new Date()).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  },
+                )}
               </motion.span>
 
               <motion.span

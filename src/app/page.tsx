@@ -1,7 +1,7 @@
 // app/page.tsx
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
-import Blogs from "./components/Blogs";
+//import Blogs from "./components/Blogs";
 import NewsLetter from "./components/NewsLetter";
 import Footer from "./components/Footer";
 
@@ -20,7 +20,7 @@ export default async function Home() {
     <section className="">
       <Hero data={settings} />
       <Projects projects={projects || []} />
-      <Blogs blogs={blogs || []} />
+      {/* <Blogs blogs={blogs || []} /> */}
       <NewsLetter />
       <Footer />
     </section>
