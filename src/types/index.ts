@@ -14,6 +14,7 @@ export interface Blog {
   youtubeLink: string;
   readMinute: string;
   slug: string;
+  readTime: string;
   createdAt: string;
   updatedAt: string;
 }
