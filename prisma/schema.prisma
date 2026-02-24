@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+ 
+model Settings {
+  id           Int      @id @default(autoincrement())
+  appName      String   @unique
+  logo         String?
+  firstName    String
+  lastName     String
+  email        String   @unique
+  phoneNumber  String?
+  roles        String   // Storing roles as a JSON array string
+  githubUrl    String?
+  facebookUrl  String?
+  xUrl         String?
+  linkedinUrl  String?
+  instagramUrl String?
+  cvUrl        String?
+  address      String?
+  city         String?
+  country      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Projects in the portfolio.
+model Project {
+  id           Int      @id @default(autoincrement())
+  title        String
+  excerpt      String   @db.Text
+  description  String   @db.Text
+  captionImage String
+  images       String   // Storing image URLs as a JSON array string
+  tech         String   // Storing tech tags as a JSON array string
+  githubUrl    String?
+  demoUrl      String?
+  youtubeUrl   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Blog posts for the portfolio.
+model Blog {
+  id           Int           @id @default(autoincrement())
+  title        String
+  excerpt      String        @db.Text
+  details      String        @db.Text
+  readMinute   Int?
+  slug         String
+  youtubeLink  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  comments     BlogComment[] // A blog post can have many comments
+}
+
+// Comments for blog posts.
+model BlogComment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String   @db.Text
+  blogId    Int      // Foreign key to link to a specific blog
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Newsletter subscribers.
+model NewsLetter {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+// Contact form submissions.
+model ContactMe {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
