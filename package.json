@@ -10,7 +10,7 @@
     "postinstall": "prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:generate": "npx prisma generate",
-    "prisma:seed": "node --loader ts-node/esm prisma/seed.ts",
+    "prisma:seed": "node prisma/seed.js",
     "db:push": "npx prisma db push"
   },
   "dependencies": {

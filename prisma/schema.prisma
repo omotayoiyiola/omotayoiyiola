@@ -1,89 +1,136 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
- 
-model Settings {
-  id           Int      @id @default(autoincrement())
-  appName      String   @unique
-  logo         String?
-  firstName    String
-  lastName     String
-  email        String   @unique
-  phoneNumber  String?
-  roles        String   // Storing roles as a JSON array string
-  githubUrl    String?
-  facebookUrl  String?
-  xUrl         String?
-  linkedinUrl  String?
-  instagramUrl String?
-  cvUrl        String?
-  address      String?
-  city         String?
-  country      String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model Profile {
+  id                 Int      @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  email              String   @unique
+  phoneNumber        String?
+  username           String   @unique
+  passwordHash       String
+  jobTitle           String
+  dateOfBirth        DateTime?
+  gender             String?
+  country            String?
+  state              String?
+  profileImageLarge  String?
+  profileImageSmall  String?
+  aboutMessage       String
+  skills             String[] @default([])
+  featuredSkills     String[] @default([])
+  languages          String[] @default([])
+  openToJobs         Boolean  @default(true)
+  facebookUrl        String?
+  xUrl               String?
+  linkedinUrl        String?
+  instagramUrl       String?
+  tiktokUrl          String?
+  githubUrl          String?
+  websiteUrl         String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
-// Projects in the portfolio.
-model Project {
-  id           Int      @id @default(autoincrement())
-  title        String
-  excerpt      String   @db.Text
-  description  String   @db.Text
-  captionImage String
-  images       String   // Storing image URLs as a JSON array string
-  tech         String   // Storing tech tags as a JSON array string
-  githubUrl    String?
-  demoUrl      String?
-  youtubeUrl   String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model WorkExperience {
+  id              Int      @id @default(autoincrement())
+  companyName     String
+  jobTitle        String
+  technicalSkills String[] @default([])
+  startDate       String
+  endDate         String?
+  isCurrentRole   Boolean  @default(false)
+  description     String
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
-// Blog posts for the portfolio.
+model EducationHistory {
+  id            Int      @id @default(autoincrement())
+  school        String
+  courseStudied String
+  startYear     String
+  endYear       String?
+  description   String?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PortfolioProject {
+  id            Int      @id @default(autoincrement())
+  title         String
+  slug          String   @unique
+  summary       String
+  coverImage    String?
+  year          String?
+  liveUrl       String?
+  repositoryUrl String?
+  skillsUsed    String[] @default([])
+  media         Json     @default("[]")
+  sortOrder     Int      @default(0)
+  isFeatured    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Certification {
+  id            Int      @id @default(autoincrement())
+  title         String
+  acronym       String?
+  issuer        String
+  dateObtained  String?
+  credentialUrl String?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
 model Blog {
-  id           Int           @id @default(autoincrement())
-  title        String
-  excerpt      String        @db.Text
-  details      String        @db.Text
-  readMinute   Int?
-  slug         String
-  youtubeLink  String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  comments     BlogComment[] // A blog post can have many comments
+  id            Int           @id @default(autoincrement())
+  title         String
+  excerpt       String
+  details       String
+  readMinute    Int?
+  slug          String        @unique
+  featuredImage String?
+  galleryImages Json          @default("[]")
+  youtubeLink   String?
+  published     Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  comments      BlogComment[]
 }
 
-// Comments for blog posts.
 model BlogComment {
   id        Int      @id @default(autoincrement())
   name      String
   email     String
-  message   String   @db.Text
-  blogId    Int      // Foreign key to link to a specific blog
-  blog      Blog     @relation(fields: [blogId], references: [id])
+  message   String
+  blogId    Int
+  blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Newsletter subscribers.
 model NewsLetter {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   createdAt DateTime @default(now())
 }
 
-// Contact form submissions.
 model ContactMe {
   id        Int      @id @default(autoincrement())
   name      String
   email     String
-  message   String   @db.Text
+  message   String
   createdAt DateTime @default(now())
 }

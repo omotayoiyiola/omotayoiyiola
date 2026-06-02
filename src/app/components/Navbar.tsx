@@ -8,125 +8,92 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 
-const Navbar = () => {
+const menuItems = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "Resume" },
+  { href: "/projects", label: "Projects" },
+  { href: "/contact", label: "Contact" },
+  { href: "/dashboard", label: "Dashboard" },
+];
+
+export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
-  console.log("IS MOBILE OPEN", isMobileMenuOpen);
-
-  const menuItems = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/projects", label: "Projects" },
-    { href: "/blogs", label: "Blogs" },
-    { href: "/contact", label: "Contact" },
-  ];
   return (
-    <nav className="fixed w-full bg-white/80 dark:bg-dark/80 backdrop-blur-sm z-50 border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
-      <div className="container max-w-7xl mx-auto px-4">
-        {/*desktop menu*/}
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold text-primary">
-            DevFolio&trade;
-          </Link>
-          {/*desktop menu */}
-          <div className="hidden md:flex items-center space-x-8"></div>
+    <nav className="fixed z-50 w-full border-b border-black/10 bg-white/85 backdrop-blur-md transition-colors dark:border-white/10 dark:bg-dark/85">
+      <div className="container flex h-16 items-center justify-between">
+        <Link href="/" className="text-lg font-black text-primary">
+          Omotayo Iyiola
+        </Link>
+
+        <div className="hidden items-center gap-7 md:flex">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`text-sm font-semibold transition-colors hover:text-primary ${
+                pathname === item.href ? "text-primary" : "text-secondary"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
           <button
-            onClick={toggleMobileMenu}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+            aria-label="Toggle theme"
+            onClick={toggleTheme}
+            className="rounded-md p-2 text-secondary transition-colors hover:bg-black/5 hover:text-primary dark:hover:bg-white/10"
           >
-            {isMobileMenuOpen ? (
-              <XMarkIcon className="w-5 h-5" />
+            {theme === "dark" ? (
+              <SunIcon className="h-5 w-5" />
             ) : (
-              <Bars3Icon className="w-5 h-5" />
+              <MoonIcon className="h-5 w-5" />
             )}
           </button>
-
-          <div className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href;
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`hover:text-primary transition-colors font-medium ${
-                    isActive ? "text-primary" : ""
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:text-white hover:text-primary dark:hover:bg-gray-800 transition-colors cursor-pointer"
-            >
-              {theme === "dark" ? (
-                <SunIcon className="w-5 h-5" />
-              ) : (
-                <MoonIcon className="w-5 h-5" />
-              )}
-            </button>
-          </div>
         </div>
 
-        {/*mobile menu*/}
-        {isMobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="space-y-4 py-4">
-              {menuItems.map((item, index) => (
-                <div key={index} onClick={toggleMobileMenu}>
-                  <Link
-                    href={item.href}
-                    className="block py-2 hover:text-primary transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </div>
-              ))}
-              <div>
-                <button
-                  onClick={toggleTheme}
-                  className="flex items-center p-2 hover:text-primary transition-colors"
-                >
-                  {theme === "dark" ? (
-                    <>
-                      {" "}
-                      <SunIcon className="w-5 h-5 mr-2" />
-                      Light
-                    </>
-                  ) : (
-                    <>
-                      <MoonIcon className="w-5 h-5 mr-2" />
-                      Dark
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-            <button
-              className="p-2 rounded-lg hover:bg-gray-100 text-primary dark:hover:bg-gray-800 transition-colors cursor-pointer"
-              onClick={toggleMobileMenu}
-            >
-              {theme === "dark" ? (
-                <SunIcon className="w-5 h-5" />
-              ) : (
-                <MoonIcon className="w-5 h-5" />
-              )}
-            </button>
-          </div>
-        )}
+        <button
+          aria-label="Toggle mobile menu"
+          onClick={() => setIsMobileMenuOpen((open) => !open)}
+          className="rounded-md p-2 md:hidden"
+        >
+          {isMobileMenuOpen ? (
+            <XMarkIcon className="h-6 w-6" />
+          ) : (
+            <Bars3Icon className="h-6 w-6" />
+          )}
+        </button>
       </div>
+
+      {isMobileMenuOpen && (
+        <div className="border-t border-black/10 bg-white px-4 py-4 dark:border-white/10 dark:bg-dark md:hidden">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block py-3 font-semibold text-secondary hover:text-primary"
+            >
+              {item.label}
+            </Link>
+          ))}
+          <button
+            onClick={toggleTheme}
+            className="mt-2 inline-flex items-center gap-2 py-3 font-semibold text-secondary"
+          >
+            {theme === "dark" ? (
+              <SunIcon className="h-5 w-5" />
+            ) : (
+              <MoonIcon className="h-5 w-5" />
+            )}
+            Theme
+          </button>
+        </div>
+      )}
     </nav>
   );
-};
-
-export default Navbar;
+}

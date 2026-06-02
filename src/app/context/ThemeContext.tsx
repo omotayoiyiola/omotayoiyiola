@@ -15,7 +15,6 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
-  const [initialTheme, setInitialTheme] = useState<Theme>("light");
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -35,7 +34,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       .matches
       ? "dark"
       : "light";
-    setInitialTheme(savedTheme || systemTheme);
+    const initialTheme = savedTheme || systemTheme;
 
     setThemeState(initialTheme);
 

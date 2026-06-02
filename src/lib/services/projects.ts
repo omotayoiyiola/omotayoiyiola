@@ -1,10 +1,12 @@
 // lib/services/projects.ts
 import prisma from "@/lib/prisma";
-import { Project } from "@prisma/client";
+import { PortfolioProject } from "@/generated/prisma";
 
-export const getProjects = async (): Promise<Project[] | null> => {
+export const getProjects = async (): Promise<PortfolioProject[] | null> => {
   try {
-    const projects = await prisma.project.findMany();
+    const projects = await prisma.portfolioProject.findMany({
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    });
     return projects;
   } catch (error) {
     console.error("Failed to fetch projects:", error);

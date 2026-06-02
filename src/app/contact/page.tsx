@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { FaEnvelope, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 import { motion } from "framer-motion";
-import {
-  fadeInUp,
-  staggerContainer,
-  cardHoverSmall,
-  slideInLeft,
-  fadeIn,
-} from "@/utils/animations";
+import { fadeInUp, slideInLeft, fadeIn } from "@/utils/animations";
 
 interface FormData {
   name: string;
@@ -50,7 +44,7 @@ const ContactPage = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -88,10 +82,10 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-semibold">Email</h3>
                   <a
-                    href="mailto:your.email@example.com"
+                    href="mailto:omotayoiyiola123@gmail.com"
                     className="text-secondary hover:text-primary"
                   >
-                    your.email@example.com
+                    omotayoiyiola123@gmail.com
                   </a>
                 </div>
               </motion.div>
@@ -109,10 +103,10 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-semibold">Phone</h3>
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+2347031936856"
                     className="text-secondary hover:text-primary"
                   >
-                    +1 (234) 567-890
+                    +234 703-193-6856
                   </a>
                 </div>
               </motion.div>
@@ -130,10 +124,10 @@ const ContactPage = () => {
                 <div>
                   <h3 className="font-semibold">Location</h3>
                   <a
-                    href="mailto:your.email@example.com"
+                    href="mailto:omotayoiyiola123@gmail.com"
                     className="text-secondary hover:text-primary"
                   >
-                    21 San Francisco Hall, Ilupeju Lagos
+                    Block 2, CMD Quarters, Shangisha Lagos Nigeria
                   </a>
                 </div>
               </div>
@@ -165,12 +159,12 @@ const ContactPage = () => {
               />
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
                 Email
               </label>
               <input
                 type="email"
-                id="name"
+                id="email"
                 name="email"
                 onChange={handleChange}
                 value={formData.email}

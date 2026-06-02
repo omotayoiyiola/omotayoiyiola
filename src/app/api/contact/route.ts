@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 interface ContactRequestBody {
   name: string;
@@ -6,22 +7,51 @@ interface ContactRequestBody {
   message: string;
 }
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function cleanText(value: unknown, maxLength: number) {
+  if (typeof value !== "string") return "";
+  return value.trim().slice(0, maxLength);
+}
+
 export async function POST(request: Request) {
   try {
-    (await request.json()) as ContactRequestBody;
-    // Here you would typically:
-    // 1. Validate the input
-    // 2. Send an email using a service like SendGrid, AWS SES, etc.
-    // 3. Store the message in a database if needed
+    const body = (await request.json()) as ContactRequestBody;
+    const name = cleanText(body.name, 120);
+    const email = cleanText(body.email, 160).toLowerCase();
+    const message = cleanText(body.message, 3000);
 
-    // For now, we'll just simulate a successful response
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { message: "Name, email, and message are required" },
+        { status: 400 }
+      );
+    }
+
+    if (!EMAIL_PATTERN.test(email)) {
+      return NextResponse.json(
+        { message: "A valid email address is required" },
+        { status: 400 }
+      );
+    }
+
+    await prisma.contactMe.create({
+      data: {
+        name,
+        email,
+        message,
+      },
+    });
+
     return NextResponse.json(
       { message: "Message sent successfully" },
       { status: 200 }
     );
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to send message";
-    return NextResponse.json({ message: errorMessage }, { status: 500 });
+    console.error("Contact message failed:", error);
+    return NextResponse.json(
+      { message: "Failed to send message" },
+      { status: 500 }
+    );
   }
 }
